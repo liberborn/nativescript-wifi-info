@@ -1,0 +1,15 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+      xmlns:ui="nativescript-wifi-info"
+      class="page" navigatingTo="onNavigatingTo">
+
+    <ActionBar class="action-bar">
+        <Label class="action-bar-title" text="Wifi Info"></Label>
+    </ActionBar>
+
+    <StackLayout class="p-20">
+        <Label text="Wifi SSID" class="m-t-20 text-center c-black" textWrap="true"/>
+        <Label text="{{ ssid }}" class="m-t-10 text-center c-grey-dark" textWrap="true"/>
+        <Label text="Wifi SSID (native)" class="m-t-20 text-center c-black" textWrap="true"/>
+        <Label text="{{ nativeSsid }}" class="m-t-10 text-center c-grey-dark" textWrap="true"/>
+    </StackLayout>
+</Page>

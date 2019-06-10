@@ -1,0 +1,25 @@
+{
+  "nativescript": {
+    "id": "org.nativescript.demo",
+    "tns-android": {
+      "version": "5.4.0"
+    },
+    "tns-ios": {
+      "version": "5.4.0"
+    }
+  },
+  "description": "NativeScript Application",
+  "license": "SEE LICENSE IN <your-license-filename>",
+  "repository": "<fill-your-repository-here>",
+  "dependencies": {
+    "nativescript-theme-core": "~1.0.4",
+    "nativescript-wifi-info": "file:../src",
+    "tns-core-modules": "~5.4.0"
+  },
+  "devDependencies": {
+    "nativescript-dev-typescript": "~0.10.0",
+    "nativescript-dev-webpack": "~0.24.0"
+  },
+  "gitHead": "67e1a5d2fe6907c5e775d020e6439df795154f58",
+  "readme": "NativeScript Application"
+}
