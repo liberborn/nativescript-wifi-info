@@ -1,13 +1,13 @@
 {
 	"name": "nativescript-wifi-info",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "NativeScript plugin for retrieving device's wifi information details",
 	"main": "wifi-info",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
-			"android": "5.4.0",
-			"ios": "5.4.0"
+			"android": "5.1.0",
+			"ios": "5.1.0"
 		}
 	},
 	"repository": {
