@@ -8,7 +8,7 @@ A plugin for retrieving device's wifi information details.
 
 Make sure that your app has **Access WiFi Information** capability.
 
-`XCode > Open app > Capabilities > Access Wifi Information (ON)` 
+`XCode > Open app > Capabilities > Access Wifi Information (ON)`
 
 ## Installation
 
@@ -16,7 +16,7 @@ Make sure that your app has **Access WiFi Information** capability.
 tns plugin add nativescript-wifi-info
 ```
 
-## Usage 
+## Usage
 
 The wifi info plugin exposes a simple `WifiInfo()` class with several instance methods. To get the device's current Wifi SSID, instantiate an instance of `WifiInfo` and call its `getSSID()` method.
 
@@ -70,8 +70,8 @@ The plugin is currently set up to use:
 
 ## Known Issues
 
-Getting Wifi SSID is not working on simulators. On iOS it will return "No WiFi Available", 
-and on Android it will say "<unknown ssid>".
+Getting Wifi SSID is not working on simulators. On iOS it will return `No WiFi Available`,
+and on Android it will say `<unknown ssid>`.
 
 
 ## License

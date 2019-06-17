@@ -23,6 +23,6 @@ export class WifiInfo extends WifiInfoCommon {
         if (getNative) {
             return ssid;
         }
-        return ssid && ssid !== this.SSID_UNDEFINED ? ssid : this.SSID_PLACEHOLDER;
+        return ssid && ssid !== this.SSID_UNDEFINED ? ssid : '';
     }
 }

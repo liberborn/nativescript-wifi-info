@@ -29,7 +29,7 @@ export class WifiInfo extends WifiInfoCommon {
             return ssid;
         }
 
-        return ssid && ssid !== this.SSID_UNDEFINED ? ssid : this.SSID_PLACEHOLDER;
+        return ssid && ssid !== this.SSID_UNDEFINED ? ssid : '';
     }
 
 }
