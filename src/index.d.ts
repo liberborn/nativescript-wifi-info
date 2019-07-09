@@ -4,6 +4,4 @@ export declare class WifiInfo extends WifiInfoCommon {
 
     getSSID(): string;
 
-    getNativeSSID(): string;
-
 }

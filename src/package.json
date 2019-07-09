@@ -1,6 +1,6 @@
 {
     "name": "nativescript-wifi-info",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "NativeScript plugin for retrieving device's wifi information details",
     "main": "wifi-info",
     "typings": "index.d.ts",

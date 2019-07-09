@@ -2,6 +2,7 @@
 
 A plugin for retrieving device's wifi information details.
 
+
 ## Prerequisites / Requirements
 
 ### iOS
@@ -10,11 +11,13 @@ Make sure that your app has **Access WiFi Information** capability.
 
 `XCode > Open app > Capabilities > Access Wifi Information (ON)`
 
+
 ## Installation
 
 ``` JavaScript
 tns plugin add nativescript-wifi-info
 ```
+
 
 ## Usage
 
@@ -68,10 +71,16 @@ The plugin is currently set up to use:
 * Android native WifiManager API (android.net.wifi.WifiManager)
 
 
+## Additional Examples
+
+### Scan Wifi Network and show available Wifi SSID list (Android only)
+
+In angular app there is a simple implementation of scanning wifi network and populating wifi ssid list.
+
+
 ## Known Issues
 
-Getting Wifi SSID is not working on simulators. On iOS it will return `No WiFi Available`,
-and on Android it will say `<unknown ssid>`.
+Getting Wifi SSID is not working on iOS simulator (returns `No WiFi Available`). On Android it should detect a default demo Wifi Network `AndroidWifi`.
 
 
 ## License

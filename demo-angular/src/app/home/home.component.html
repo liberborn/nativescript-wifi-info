@@ -2,43 +2,36 @@
     <Label class="action-bar-title" text="Wifi Info"></Label>
 </ActionBar>
 
-<GridLayout rows="auto, auto, *, auto" class="page p-15">
+<GridLayout rows="auto, *, auto" class="page p-15">
 
-    <GridLayout row="0" rows="auto, auto" columns="*, *" verticalAlign="top">
-        <Label row="0" col="0" text="Wifi SSID" class="text-center font-weight-bold m-t-20"></Label>
-        <Label row="1" col="0" class="text-center c-grey-dark m-t-10"
-               [text]="ssid"></Label>
+    <StackLayout row="0 m-t-30">
+        <Label text="Wifi SSID" class="text-center font-weight-bold"></Label>
 
-        <Label row="0" col="1" text="Wifi SSID (native)" class="text-center font-weight-bold m-t-20"></Label>
-        <Label row="1" col="1" class="text-center c-grey-dark m-t-10"
-               [text]="nativeSsid"></Label>
+        <Label class="text-center c-grey-dark m-t-10"
+               [text]="wifiSsidText"></Label>
+    </StackLayout>
+
+    <GridLayout row="1" rows="auto, auto, auto" *ngIf="isAndroid" class="m-t-30" verticalAlign="top">
+        <Label row="0" text="Wifi Form" class="text-center font-weight-bold"></Label>
+
+        <TextField row="1" id="wifiSsid" class="m-b-25 m-t-10 input" paddingRight="40"
+                   hint="WiFi SSID"
+                   returnKeyType="next"
+                   autocapitalizationType="none"
+                   [(ngModel)]="wifiSsidInput"></TextField>
+
+        <Image row="1" src="~/images/burger-menu.png" width="25" height="25" horizontalAlignment="right"
+               marginTop="-25" marginRight="6"
+               (tap)="getAndroidWifiList()"></Image>
     </GridLayout>
 
-    <StackLayout row="1" *ngIf="isAndroid" class="m-t-20" verticalAlign="top">
-        <Label text="Wifi SSID List" class="text-center font-weight-bold"></Label>
-        <ListPicker selectedIndex="0" class="mt-20 mb-20"
-                    [items]="wifiSsidList"
-                    (selectedIndexChange)="onSelectedWifiSsid($event)"></ListPicker>
-    </StackLayout>
+    <StackLayout row="3" verticalAlign="bottom" class="m-t-30">
 
-    <StackLayout row="2" *ngIf="isAndroid" class="m-t-20" verticalAlign="top">
-        <Label text="Android Permissions" class="font-weight-bold m-b-10"></Label>
-
-        <ListView [items]="androidPermissions" height="100%">
-            <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
-                <FlexboxLayout [class.odd]="odd" [class.even]="even" justifyContent="space-between">
-                    <Label [text]='item.permission.replace("android.permission.", "")'></Label>
-                    <Label [text]='item.enabled === true ? "Enabled": "Disabled"'></Label>
-                </FlexboxLayout>
-            </ng-template>
-        </ListView>
-    </StackLayout>
-
-    <StackLayout row="3" verticalAlign="bottom" class="m-t-20">
-        <Button text="Set Wifi Info" class="btn-primary btn-blue"
+        <Button text="Set Wifi SSID" class="btn-primary btn-blue"
                 (tap)="setWifiInfo()"></Button>
-        <Button *ngIf="isAndroid" text="Set Wifi List" class="btn-primary btn-grey"
-                (tap)="setAndroidWifiList()"></Button>
+
+        <Button *ngIf="isAndroid" text="Show Wifi SSID List" class="btn-primary btn-grey"
+                (tap)="getAndroidWifiList()"></Button>
     </StackLayout>
 
 </GridLayout>

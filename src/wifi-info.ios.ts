@@ -14,15 +14,9 @@ export class WifiInfo extends WifiInfoCommon {
         return this.getWifiSSID();
     }
 
-    getNativeSSID(): string {
-        return this.getWifiSSID(true);
-    }
-
-    private getWifiSSID(getNative: boolean = false): string {
+    private getWifiSSID(): string {
         const ssid = LANProperties.fetchSSIDInfo();
-        if (getNative) {
-            return ssid;
-        }
+
         return ssid && ssid !== this.SSID_UNDEFINED ? ssid : '';
     }
 }

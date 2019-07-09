@@ -1,37 +1,34 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {ModalDialogService} from 'nativescript-angular';
 import {WifiInfo} from 'nativescript-wifi-info';
 import {isAndroid} from 'tns-core-modules/platform';
-import * as application from 'tns-core-modules/application';
-import * as Permissions from 'nativescript-permissions';
-import AndroidPermission from '~/app/shared/AndroidPermission';
-import {ListPicker} from 'tns-core-modules/ui/list-picker';
+import {connectionType, getConnectionType} from 'tns-core-modules/connectivity';
+import {WifiModalComponent} from '~/app/home/wifi-modal/wifi-modal.component';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
-import Context = android.content.Context;
-import WifiManager = android.net.wifi.WifiManager;
+import * as Permissions from 'nativescript-permissions';
 
 @Component({
     selector: 'Home',
     moduleId: module.id,
-    templateUrl: './home.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
 
+    readonly MODAL_OPTIONS = {
+        context: {},
+        fullscreen: false,
+        viewContainerRef: this.vcRef
+    };
+
     isAndroid = isAndroid;
 
-    androidPermissions: AndroidPermission[] = [
-        new AndroidPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION, false),
-        new AndroidPermission(android.Manifest.permission.ACCESS_WIFI_STATE, false),
-        new AndroidPermission(android.Manifest.permission.CHANGE_WIFI_STATE, false),
-    ];
-
-    ssid: string;
-    nativeSsid: string;
-    wifiSsidList = [''];
+    wifiSsidText: string;
+    wifiSsidInput: string;
 
     private wifiInfo: WifiInfo;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {
+    constructor(private modal: ModalDialogService,
+                private vcRef: ViewContainerRef) {
         this.wifiInfo = new WifiInfo();
     }
 
@@ -39,89 +36,45 @@ export class HomeComponent implements OnInit {
     }
 
     setWifiInfo() {
-        this.ssid = this.wifiInfo.getSSID();
-        this.nativeSsid = this.wifiInfo.getNativeSSID();
-        this.changeDetectorRef.detectChanges();
-    }
-
-    setAndroidWifiList() {
         const me = this;
 
-        Permissions.requestPermission(this.getAndroidPermissions(), 'Needed to scan wifi network')
+        this.wifiSsidText = '';
+
+        Permissions.requestPermission(android.Manifest.permission.ACCESS_NETWORK_STATE, 'Needed to check network state')
             .then((perms) => {
-                me.setAndroidPermission(me, perms);
-                me.scanAndroidWifiNetwork(me);
+                me.setWifiSsid(me);
             })
             .catch((e) => {
+                console.log('Grant permissions error', e);
                 dialogs.alert({
-                    title: "Permissions Missing",
-                    message: "Cannot get Wifi SSID list without permissions",
-                    okButtonText: "OK"
+                    title: 'Permissions Missing',
+                    message: 'Cannot get Wifi SSID without permissions',
+                    okButtonText: 'OK'
                 }).then(() => {});
             });
     }
 
-    getAndroidPermissions(): string[] {
-        const perms = [];
-        let i;
+    setWifiSsid(me: any) {
+        const conn = getConnectionType();
 
-        for (i = 0; i < this.androidPermissions.length; i++) {
-            perms.push(this.androidPermissions[i].permission);
+        if (conn === connectionType.wifi) {
+            me.wifiSsidText = me.wifiInfo.getSSID();
+        } else {
+            dialogs.alert({
+                title: 'No Wifi Connection',
+                message: 'Device is not connected to wifi network',
+                okButtonText: 'OK'
+            }).then(() => {});
         }
-
-        return perms;
     }
 
-    setAndroidPermission(me: any, perms: any) {
-        let i;
-        for (i = 0; i < me.androidPermissions.length; i++) {
-            const perm: AndroidPermission = me.androidPermissions[i];
-            if (perms[perm.permission] !== undefined && perms[perm.permission] === true) {
-                me.androidPermissions[i].enabled = true;
+    getAndroidWifiList() {
+        this.wifiSsidInput = '';
+
+        this.modal.showModal(WifiModalComponent, this.MODAL_OPTIONS).then(result => {
+            if (result !== '') {
+                this.wifiSsidInput = result;
             }
-        }
-        me.changeDetectorRef.detectChanges();
-    }
-
-    scanAndroidWifiNetwork(me) {
-        application.android.registerBroadcastReceiver(
-            WifiManager.SCAN_RESULTS_AVAILABLE_ACTION,
-            (context, intent) => {
-                me.onAndroidWifiListReady(me, context, intent);
-            }
-        );
-
-        me.getWifiManager().startScan();
-    }
-
-    getWifiManager(): WifiManager {
-        return application.android.context.getSystemService(Context.WIFI_SERVICE);
-    }
-
-    onAndroidWifiListReady(me, context, intent) {
-        console.log('On wifi list ready');
-        const results = me.getWifiManager().getScanResults();
-        let wifiList = [];
-        let index = 0;
-
-        for (index = 0; index < results.size(); index++) {
-            const result: android.net.wifi.ScanResult = results.get(index);
-            wifiList.push(result.SSID);
-        }
-
-        const distinct = (value, index, self) => {
-            return self.indexOf(value) === index;
-        };
-        const distinctWifiList = wifiList.filter(distinct);
-        const sortedWifiList = distinctWifiList.sort((a, b) => (a > b ? 1 : -1));
-
-        console.log('Wifi SSID List', sortedWifiList);
-        me.wifiSsidList = sortedWifiList;
-        me.changeDetectorRef.detectChanges();
-    }
-
-    onSelectedWifiSsid(args) {
-        // console.log('on selected wifi ssid');
-        let picker = <ListPicker>args.object;
+        });
     }
 }

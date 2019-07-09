@@ -1,0 +1,9 @@
+<GridLayout>
+    <ListView [items]="wifiSsidList" class="list-group">
+        <ng-template let-wifiSsid="item">
+            <StackLayout class="list-group-item" (tap)="close(wifiSsid)">
+                <Label [text]="wifiSsid" class="label" width="100%"></Label>
+            </StackLayout>
+        </ng-template>
+    </ListView>
+</GridLayout>
